@@ -2,3 +2,6 @@ scala/.idea/
 scala/scala.iml
 scala/out/
 *.class
+*.iml
+.DS_Store
+.idea
