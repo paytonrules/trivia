@@ -16,21 +16,17 @@ public class GameRunner {
 		aGame.add("Pat");
 		aGame.add("Sue");
 		
-		Random rand = new Random();
+		Random rand = new Random(1);
 	
-		do {
-			
+		for (int i = 0; i < 300; i++) {
 			aGame.roll(rand.nextInt(5) + 1);
-			
+
 			if (rand.nextInt(9) == 7) {
 				notAWinner = aGame.wrongAnswer();
 			} else {
 				notAWinner = aGame.wasCorrectlyAnswered();
 			}
-			
-			
-			
-		} while (notAWinner);
+		}
 		
 	}
 }
