@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 
 public class GoldenMasterTest {
     private PrintStream originalOutputStream;
+    private ByteArrayOutputStream standardOutputStream;
 
     @Before
     public void setUp() {
@@ -28,19 +29,28 @@ public class GoldenMasterTest {
 
     @Test
     public void ItPassesTheGoldenMaster() throws IOException {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(outputStream);
-        System.setOut(printStream);
+        redirectStandardOutput();
 
         GameRunner.main(new String[] {});
 
-        String generatedOutput = new String( outputStream.toByteArray(), Charset.defaultCharset());
+        String generatedOutput = readStandardOutToString();
 
         final Path goldenMasterPath =
                 Paths.get(getClass().getResource("/golden-master.txt").getFile());
+
         String masterOutput = new String(Files.readAllBytes(goldenMasterPath),
                 Charset.defaultCharset());
 
         assertEquals(generatedOutput, masterOutput);
+    }
+
+    private String readStandardOutToString() {
+        return new String( standardOutputStream.toByteArray(), Charset.defaultCharset());
+    }
+
+    private void redirectStandardOutput() {
+        standardOutputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(standardOutputStream);
+        System.setOut(printStream);
     }
 }
